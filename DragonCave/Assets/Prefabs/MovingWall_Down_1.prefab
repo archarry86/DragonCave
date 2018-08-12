@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4567309381695136}
   - component: {fileID: 61369953550691432}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MovingWall_Down_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

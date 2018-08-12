@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4061325174007182}
   - component: {fileID: 60064562106838114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlopeFloor_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

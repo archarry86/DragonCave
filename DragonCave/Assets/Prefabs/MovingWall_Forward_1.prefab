@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4669969418799564}
   - component: {fileID: 61011979762552812}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MovingWall_Forward_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
