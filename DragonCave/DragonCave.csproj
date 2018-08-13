@@ -306,6 +306,7 @@
     <Compile Include="Assets\Scripts\Controllers\Switch.cs" />
     <Compile Include="Assets\Scripts\Controllers\ViewController.cs" />
     <Compile Include="Assets\Scripts\Controllers\WallFloorMovement.cs" />
+    <Compile Include="Assets\Scripts\Enums\Sounds.cs" />
     <Compile Include="Assets\Scripts\Enums\MovingWallTypes.cs" />
     <Compile Include="Assets\Scripts\Enums\MovingWalStates.cs" />
     <Compile Include="Assets\Scripts\Enums\GameStates.cs" />

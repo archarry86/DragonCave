@@ -21,7 +21,10 @@ public class StatueTreasure : MonoBehaviour
     private void ProcessCollision(Collider2D col)
     {
         //Player has won
+        if (col.transform.gameObject.layer != 9)
+            return;
 
+        AudioController.instance.PlaySound(Sounds.Treasure);
         LevelController.instance.PlayerHasWon();
     }
 

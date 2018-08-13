@@ -59,7 +59,7 @@ public class Switch : MonoBehaviour
 
         switchState = SwitchStates.Pressed;
         this.GetComponent<SpriteRenderer>().sprite = pressedState;
-
+        AudioController.instance.PlaySound(Sounds.Switch);
         if (listener != null)
         {
             listener.SwitchOn(this.switchType);

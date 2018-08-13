@@ -20,6 +20,9 @@ public class LevelController : GameContoller
         }
         if(levels!= null && levels.Length > 0)
         levelInformation = levels[0];
+
+
+        AudioController.instance.LoopSound(Sounds.Theme);
     }
 
     public void NextLevel()
@@ -110,6 +113,9 @@ public class LevelController : GameContoller
         //show score 
         ViewController.instance.ShowLevelPassed();
         ViewController.instance.ShowScore();
+
+        AudioController.instance.StopSound(Sounds.Theme);
+        AudioController.instance.PlaySound(Sounds.Victory);
     }
 
     public void PlayerHasDead()

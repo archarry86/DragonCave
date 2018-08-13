@@ -141,6 +141,7 @@ public class Player : MonoBehaviour,IPlayerStatus
                 {
                     datewalljump = DateTime.Now;
                     playerState = PlayerStates.Jumpling;
+                    //AudioController.instance.PlaySound(Sounds.Jump);
                     CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
                 }
         
@@ -185,6 +186,7 @@ public class Player : MonoBehaviour,IPlayerStatus
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            //AudioController.instance.PlaySound(Sounds.Jump);
             playerState = PlayerStates.Jumpling;
             CurrentJumpVector = this.JumpVector;
             return true;
