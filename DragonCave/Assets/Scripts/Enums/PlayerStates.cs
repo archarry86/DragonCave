@@ -4,6 +4,7 @@ using UnityEditor;
 public enum GameStates
 {
     _InitScreen,
+    Climbing,
     Playing,
     PlayerHasDead,
     PlayerHasWon,

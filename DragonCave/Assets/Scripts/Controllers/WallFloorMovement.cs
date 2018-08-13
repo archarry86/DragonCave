@@ -17,6 +17,8 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
     public float yellowswitchvelscale;
 
+    public float velnormalmultiplier;
+
     private float velrapidscale;
 
 
@@ -32,7 +34,7 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
         velscale = velnormalscale;
 
-        velrapidscale = velnormalscale * 5;
+        velrapidscale = velnormalscale * velnormalmultiplier;
 
         yellowTime = TimeSpan.FromMilliseconds(MilisecondsYeloowTime);
 

@@ -1,17 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Player : MonoBehaviour,IPlayerStatus
 {
+    private TimeSpan nextWallSliding = TimeSpan.Zero;
+
+    private DateTime datewalljump = DateTime.MinValue;
+
+    public int WallJumpingMsFrecuency = 100;
+
     private int frame = 0;
 
+    private bool wallsliding = false;
+
     public float minGroundNormalY = .65f;
+
+    public float Gravitywallsliding = 0.25f;
+
+    public float Gravity = 1f;
 
     public PlayerStates playerState;
 
     public float HorizontalMovementdelta = 0.5f;
 
     public Vector3 JumpVector = new Vector3(0, 0.25f, 0);
+
+    public float JumpWallVectorPercentage = 1.1f;
 
     public Vector3 gravity = new Vector3(0, -9.81f, 0);
 
@@ -37,18 +52,21 @@ public class Player : MonoBehaviour,IPlayerStatus
     // Use this for initialization
     void Start()
     {
+        nextWallSliding = TimeSpan.FromMilliseconds(WallJumpingMsFrecuency);
+
         playerState = PlayerStates.OnGround;
 
         this.rigidbody2D = this.GetComponent<Rigidbody2D>();
 
         //TODO provisional
-        Camera.main.transform.parent = this.transform;
+       // Camera.main.transform.parent = this.transform;
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        wallsliding = false;
         frame++;
         switch (playerState)
         {
@@ -56,7 +74,9 @@ public class Player : MonoBehaviour,IPlayerStatus
             case PlayerStates.Falling:
                 //ProcessFalling();
                 CheckMovingButtons();
+                CheckWallSliding();
                 CheckOnTheFloor();
+               
                 AddHorizontalMovement();
 
                 break;
@@ -64,8 +84,15 @@ public class Player : MonoBehaviour,IPlayerStatus
 
                 CheckMovingButtons();
                 ProcessJump();
-                AddHorizontalMovement();
+                CheckWallSliding();
+                if (!wallsliding)
+                    AddHorizontalMovement();
+                else
+                 {
+                    playerState = PlayerStates.Falling;
+                    this.CurrentJumpVector = Vector3.zero;
 
+                }
 
                 break;
             case PlayerStates.OnGround:
@@ -74,10 +101,10 @@ public class Player : MonoBehaviour,IPlayerStatus
 
                 var _checkJumping = CheckJumping();
                 //Debug.Log(frame+" CheckJumping " + _checkJumping);
-                if (_checkJumping)
-                    return;
+                if (!_checkJumping)
+                    CheckOnTheFloor();
 
-                CheckOnTheFloor();
+
                 AddHorizontalMovement();
 
                
@@ -87,6 +114,45 @@ public class Player : MonoBehaviour,IPlayerStatus
        
 
         }
+    }
+
+    private void CheckWallSliding()
+    {
+
+
+        this.rigidbody2D.gravityScale = Gravity;
+        Vector3 direction = horizontalMovement;
+        direction.x *= (this.transform.localScale.x / 2); // + 0.1f;
+
+        RaycastHit2D rayhits = Physics2D.BoxCast(
+            this.transform.position + direction,
+            new Vector2(this.transform.localScale.x / 2, this.transform.localScale.y), 
+            0, 
+            new Vector2(direction.x / 2, 0), 
+           Mathf.Abs(direction.x / 2 ),
+            LayerMask.GetMask("Ground"));
+
+        if (rayhits.collider != null)
+        {
+            wallsliding = true;
+            if ( Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
+            {
+                if((DateTime.Now - datewalljump) >= nextWallSliding)
+                {
+                    datewalljump = DateTime.Now;
+                    playerState = PlayerStates.Jumpling;
+                    CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
+                }
+        
+            }
+            else
+            {
+                this.rigidbody2D.gravityScale = Gravitywallsliding;
+            }
+        }
+    
+
+ 
     }
 
     private void ProcessJump()
@@ -171,28 +237,22 @@ public class Player : MonoBehaviour,IPlayerStatus
 
     private void CheckOnTheFloor()
     {
-        this.rigidbody2D.gravityScale = 1;
+        this.rigidbody2D.gravityScale = wallsliding? Gravitywallsliding : Gravity;
         CurrentNormal = Vector3.up;
         isonfloor = false;
         Vector3 _down = Vector3.down;
         _down.y *= (this.transform.localScale.y / 2); // + 0.1f;
     
         var mask = LayerMask.GetMask("Ground");
-        //int layerMask = 1 << 8;
+  
+        RaycastHit2D rayhits = Physics2D.BoxCast(
+            this.transform.position + _down,
+            new Vector2(this.transform.localScale.x / 2, 0.1f),
+            0,
+            new Vector2(0,-0.1f), 
+            0.1f, 
+            LayerMask.GetMask("Ground")); 
 
-        //Ray ray = new Ray(this.transform.position, _down);
-
-        //isonfloor = Physics.Raycast(ray, Mathf.Abs(_down.y));
-
-      // var all = Physics2D.RaycastAll(this.transform.position, _down, Mathf.Abs(_down.y), mask);
-      // if(all != null && all.Length > 0)
-      // {
-      //  
-      //
-      //   
-      // }
-
-        RaycastHit2D rayhits = Physics2D.BoxCast(this.transform.position + _down, new Vector2(this.transform.localScale.x / 2, 0.1f), 0, new Vector2(0,-0.1f), 0.1f, LayerMask.GetMask("Ground")); ;
         if (rayhits.collider != null)
         {
             isonfloor = true;
@@ -243,18 +303,18 @@ public class Player : MonoBehaviour,IPlayerStatus
     void OnGUI()
     {
 
-        var _deltavector = new Vector3(-(this.transform.localScale.x), (this.transform.localScale.y / 2) + 1, 0);
-
-        var posonscreen = Camera.main.WorldToScreenPoint(this.transform.position + _deltavector);
-
-
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height),"Normal " +CurrentNormal + " RgbPos "+rigidbody2D.position+ " Playerstate = " + this.playerState + " , CurremtJumpVector = " + this.CurrentJumpVector);
-
-
-        var currentcolor = GUI.color;
-        GUI.color = Color.red;
-        GUI.Label(new Rect(posonscreen.x, Screen.height - posonscreen.y, 100, 50), playerState.ToString());
-        GUI.color = currentcolor;
+      //  var _deltavector = new Vector3(-(this.transform.localScale.x), (this.transform.localScale.y / 2) + 1, 0);
+      //
+      //  var posonscreen = Camera.main.WorldToScreenPoint(this.transform.position + _deltavector);
+      //
+      //
+      //  GUI.Label(new Rect(0, 0, Screen.width, Screen.height),"Movement "+this.horizontalMovement+ " wallsliding " + wallsliding); //+ " Normal " +CurrentNormal + " RgbPos "+rigidbody2D.position+ " Playerstate = " + this.playerState + " , CurremtJumpVector = " + this.CurrentJumpVector);
+      //
+      //
+      //  var currentcolor = GUI.color;
+      //  GUI.color = Color.red;
+      //  GUI.Label(new Rect(posonscreen.x, Screen.height - posonscreen.y, 100, 50), playerState.ToString());
+      //  GUI.color = currentcolor;
 
 
         

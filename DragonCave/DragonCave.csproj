@@ -301,6 +301,7 @@
     <Compile Include="Assets\Scripts\Controllers\GameContoller.cs" />
     <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
     <Compile Include="Assets\Scripts\Controllers\Player.cs" />
+    <Compile Include="Assets\Scripts\Controllers\PlayerTracker.cs" />
     <Compile Include="Assets\Scripts\Controllers\StatueTreasure.cs" />
     <Compile Include="Assets\Scripts\Controllers\Switch.cs" />
     <Compile Include="Assets\Scripts\Controllers\ViewController.cs" />
