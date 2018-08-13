@@ -9,32 +9,65 @@ public abstract class GameContoller : MonoBehaviour
 
     protected IPlayerStatus playerInfo;
 
+    protected GameStates gameState;
+
+    public int CurrentLevel = 0;
+
     // Use this for initialization
     void Start()
     {
         playerInfo = playerTransform.GetComponent<IPlayerStatus>();
+        //todo should be _InitScreen
+        gameState = GameStates.Playing;
         ProcessStart();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ProcessUpdate();
+
+        switch (gameState)
+        {
+            case GameStates._InitScreen:
+                break;
+            case GameStates.Playing:
+                ProcessUpdate();
+                break;
+            case GameStates.PlayerHasWon:
+                //score
+
+                
+                break;
+            case GameStates.NextLevelLoading:
+
+                break;
+            case GameStates.ScoreScreen:
+                break;
+        }
+
         GameControllerUpdate();
+
     }
 
-    public  void ProcessUpdate()
+    public void ProcessUpdate()
     {
-        if (levelInformation.IsCurrentCheckPointActivated(playerTransform.position))
+
+        if (levelInformation!= null && levelInformation.IsCurrentCheckPointActivated(playerTransform.position))
         {
             levelInformation.ActivateEvent();
             levelInformation.NextCheckPoint();
         }
     }
 
-    public  void OnGUI()
+    public void OnGUI()
     {
         ProcessOnGUI();
+    }
+
+
+    public virtual void StartPlaying()
+    {
+        gameState = GameStates.Playing;
     }
 
     public virtual void ProcessStart()
@@ -46,11 +79,11 @@ public abstract class GameContoller : MonoBehaviour
     {
 
     }
-    public  virtual void GameControllerUpdate()
+    public virtual void GameControllerUpdate()
     {
-       
+
     }
 
-   
+
 
 }

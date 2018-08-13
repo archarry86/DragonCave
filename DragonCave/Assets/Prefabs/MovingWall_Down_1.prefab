@@ -53,6 +53,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4567309381695136}
   - component: {fileID: 61369953550691432}
+  - component: {fileID: 114460959501904318}
+  - component: {fileID: 114847029101414606}
   m_Layer: 8
   m_Name: MovingWall_Down_1
   m_TagString: Untagged
@@ -81,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1280797692799872}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.3, y: 15.03, z: -8.81}
+  m_LocalPosition: {x: 58.31, y: -1.2, z: -8.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4112704884603766}
@@ -113,7 +115,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.2344904, y: 0.017674446}
+  m_Offset: {x: -0.30819702, y: 0.03610134}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -124,8 +126,42 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.9702168, y: 4.0055647}
+  m_Size: {x: 3.454277, y: 3.6370354}
   m_EdgeRadius: 0
+--- !u!114 &114460959501904318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280797692799872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40e059c2dfccf944fb628d34083e2edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MilisecondsYeloowTime: 5000
+  direction: {x: 0, y: -1, z: 0}
+  velnormalscale: 0.7
+  yellowswitchvelscale: 0.1
+  movingState: 0
+  switchType: 0
+--- !u!114 &114847029101414606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280797692799872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40e059c2dfccf944fb628d34083e2edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MilisecondsYeloowTime: 5000
+  direction: {x: 0, y: -1, z: 0}
+  velnormalscale: 1.5
+  yellowswitchvelscale: 0.1
+  movingState: 0
+  switchType: 0
 --- !u!156049354 &2569400267919341720
 Grid:
   m_ObjectHideFlags: 1

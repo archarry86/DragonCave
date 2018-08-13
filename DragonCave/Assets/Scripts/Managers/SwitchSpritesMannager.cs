@@ -7,9 +7,10 @@ public class SwitchSpritesMannager : MonoBehaviour
     public static SwitchSpritesMannager instance;
     public Sprite[] SwtitchSprites = new Sprite[System.Enum.GetValues(typeof(SwitchTypes)).Length * 2];
 
-    void Start()
+
+    void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -17,6 +18,10 @@ public class SwitchSpritesMannager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+    void Start()
+    {
+       
 
     }
 }

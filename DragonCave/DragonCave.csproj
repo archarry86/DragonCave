@@ -296,14 +296,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Controllers\AudioController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameContoller.cs" />
-    <Compile Include="Assets\Scripts\Controllers\LevelOneController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\StatueTreasure.cs" />
     <Compile Include="Assets\Scripts\Controllers\Switch.cs" />
     <Compile Include="Assets\Scripts\Controllers\ViewController.cs" />
     <Compile Include="Assets\Scripts\Controllers\WallFloorMovement.cs" />
     <Compile Include="Assets\Scripts\Enums\MovingWallTypes.cs" />
     <Compile Include="Assets\Scripts\Enums\MovingWalStates.cs" />
+    <Compile Include="Assets\Scripts\Enums\GameStates.cs" />
     <Compile Include="Assets\Scripts\Enums\SwitchStates.cs" />
+    <Compile Include="Assets\Scripts\Enums\PlayerStates.cs" />
     <Compile Include="Assets\Scripts\Enums\SwitchTypes.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayerInfo.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ISwitchListener.cs" />

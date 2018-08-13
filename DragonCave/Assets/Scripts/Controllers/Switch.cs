@@ -5,15 +5,17 @@ using UnityEngine;
 public class Switch : MonoBehaviour
 {
 
-    public ISwitchListener listener;
+    public Transform listenerObject;
+
+    private ISwitchListener listener;
 
     public SwitchTypes switchType;
 
     public SwitchStates switchState = SwitchStates.Normal;
 
-    public Sprite normalState;
+    private Sprite normalState;
 
-    public Sprite pressedState;
+    private Sprite pressedState;
 
     // Use this for initialization
     void Start()
@@ -24,6 +26,8 @@ public class Switch : MonoBehaviour
         if (normalState != null)
             this.GetComponent<SpriteRenderer>().sprite = normalState;
 
+        if(listenerObject != null)
+        listener = listenerObject.gameObject.GetComponent<ISwitchListener>();
     }
 
     // Update is called once per frame
@@ -32,15 +36,15 @@ public class Switch : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("OnCollisionEnter2D");
+        //Debug.Log("OnTriggerEnter2D");
         ProcessCollision();
     }
 
-    void OnCollisionStay2D(Collision2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
-        Debug.Log("OnCollisionStay2D");
+        //Debug.Log("OnTriggerStay2D");
         ProcessCollision();
 
     }

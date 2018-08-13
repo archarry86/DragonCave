@@ -6,21 +6,27 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Level Info", menuName = "Level Info")]
 public class LevelInfo : ScriptableObject
 {
+    public Vector3 initialCameraPosition;
+
+    public Vector3 initialPlayerPosition;
+
+    public string levelName;
+
     public LevelCheckPoint[] levelCheckPoints;
 
-    public int CurrentIndexCheckPoint;
+    public int currentIndexCheckPoint;
 
     public void NextCheckPoint()
     {
-        if(CurrentIndexCheckPoint< levelCheckPoints.Length)
-        CurrentIndexCheckPoint += 1;
+        if(currentIndexCheckPoint< levelCheckPoints.Length)
+        currentIndexCheckPoint += 1;
     }
 
     public bool IsCurrentCheckPointActivated(Vector3 position)
     {
         bool result = false;
 
-        var info = levelCheckPoints[CurrentIndexCheckPoint];
+        var info = levelCheckPoints[currentIndexCheckPoint];
 
         result = info.IsCheckPointActivated(position);
 
@@ -29,7 +35,7 @@ public class LevelInfo : ScriptableObject
 
     public void ActivateEvent()
     {
-        var info = levelCheckPoints[CurrentIndexCheckPoint];
+        var info = levelCheckPoints[currentIndexCheckPoint];
         info.ActivateEvent();
     }
 }

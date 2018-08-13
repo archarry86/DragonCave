@@ -4,9 +4,10 @@ using System;
 
 public class WallFloorMovement : MonoBehaviour, ISwitchListener
 {
-    public TimeSpan yellowTime = TimeSpan.FromMilliseconds(5000);
+    public int MilisecondsYeloowTime = 5000;
+    private TimeSpan yellowTime;
 
-    private DateTime iniDate = DateTime.MaxValue;
+    private DateTime iniDate = DateTime.MinValue;
 
     public Vector3 direction;
 
@@ -16,17 +17,14 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
     public float yellowswitchvelscale;
 
-    public float velrapidscale;
+    private float velrapidscale;
 
 
     public MovingWalStates movingState;
 
     public SwitchTypes switchType;
 
-    protected ContactFilter2D contactFilter;
-
-    private static RaycastHit2D[] chacheRays = new RaycastHit2D[10];
-
+ 
     // Use this for initialization
     void Start()
     {
@@ -34,16 +32,18 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
         velscale = velnormalscale;
 
-        contactFilter.useTriggers = false;
-        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
-        contactFilter.useLayerMask = true;
+        velrapidscale = velnormalscale * 5;
+
+        yellowTime = TimeSpan.FromMilliseconds(MilisecondsYeloowTime);
+
+       
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        DrawGuizmos();
+        
         switch (movingState)
         {
             case MovingWalStates._Still:
@@ -52,17 +52,12 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
                 break;
             case MovingWalStates.Moving:
                 //CheckColiision
-                if (CheckGroundCollission())
-                {
-                    movingState = MovingWalStates.Crashed;
-                }
-                else
-                {
-                    this.transform.position += direction * Time.deltaTime * velscale;
-                }
+              
+                this.transform.position += direction * Time.deltaTime * velscale;
+           
                 break;
             case MovingWalStates.OnSwitchBehavior:
-
+                SwitchBehavior();
                 break;
         }
     }
@@ -70,30 +65,34 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
     private bool CheckGroundCollission()
     {
         bool result = false;
-
-       Vector3 ls = this.transform.localScale / 2;// * this.direction;
+        BoxCollider2D boxcollider = this.GetComponent<BoxCollider2D>();
+        Vector3 ls = (boxcollider.size) / 2;// * this.direction;
         ls.x *= this.direction.x;
+
         ls.y *= this.direction.y;
         ls.z *= this.direction.z;
-        
-        int rays = Physics2D.Raycast(this.transform.position + ls, this.direction, contactFilter, chacheRays, 1);
 
-        result = rays > 0;
 
         return result;
     }
 
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        // DrawGuizmos();
+    }
     private void DrawGuizmos()
     {
-       
 
-        Vector3 ls = this.transform.localScale / 2;// * this.direction;
+
+        BoxCollider2D boxcollider = this.GetComponent<BoxCollider2D>();
+        Vector3 ls = (boxcollider.size) / 2;// * this.direction;
         ls.x *= this.direction.x;
         ls.y *= this.direction.y;
         ls.z *= this.direction.z;
 
-        Gizmos.DrawSphere(this.transform.position + ls, 3);
-      
+        Gizmos.DrawSphere(this.transform.position + ls, 0.5f);
+
     }
 
     public void StartMoving()
@@ -106,6 +105,7 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
         this.switchType = switchType;
         this.movingState = MovingWalStates.OnSwitchBehavior;
+         Debug.Log("switchType= " + this.switchType + ", movingState=" + this.movingState);
     }
 
     public void SwitchBehavior()
@@ -137,6 +137,10 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
                     this.velscale = velrapidscale;
                     this.movingState = MovingWalStates.Moving;
                 }
+                else
+                {
+                    this.transform.position += direction * Time.deltaTime * velscale;
+                }
                 break;
         }
     }
@@ -146,8 +150,10 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
         return (DateTime.Now - iniDate) <= yellowTime;
     }
 
+
     void OnGUI()
     {
+
         switch (movingState)
         {
             case MovingWalStates._Still:
@@ -179,6 +185,27 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
                         break;
                 }
                 break;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        ProcessCollision(col);
+    }
+
+    void OnCollisionStay2D(Collision2D col)
+    {
+       // Debug.Log("OnCollisionStay2D");
+        ProcessCollision(col);
+
+    }
+
+    private void ProcessCollision(Collision2D col)
+    {
+        if (col.gameObject.layer == 8 && movingState == MovingWalStates.Moving)
+        {
+            Debug.Log("ProcessCollision");
+            this.movingState = MovingWalStates.Crashed;
         }
     }
 }

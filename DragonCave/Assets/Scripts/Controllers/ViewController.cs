@@ -6,6 +6,8 @@ public class ViewController : MonoBehaviour
 
     public static ViewController instance;
 
+    public Transform player;
+
     public Canvas canvas;
 
     // Use this for initialization
@@ -29,12 +31,21 @@ public class ViewController : MonoBehaviour
 
     }
 
+    public virtual void StartButton()
+    {
+
+    }
 
     public virtual void ReStartButton()
     {
 
     }
     public virtual void QuitButton()
+    {
+
+    }
+
+    public virtual void NexLevelButton()
     {
 
     }
@@ -53,11 +64,35 @@ public class ViewController : MonoBehaviour
 
     }
 
-    public virtual void ShowCounter(int seconds)
+    public virtual void ShowThanksForPlaying()
     {
 
     }
 
+    public virtual void ShowCounter(int seconds)
+    {
+        //Debug.Log(seconds);
+    }
+
+    public virtual void ShowLevelTransition()
+    {
+
+    }
+    public virtual void StopLevelTransition()
+    {
+
+    }
+
+
+    public virtual void ShowLevelPassed()
+    {
+
+    }
+
+    public virtual void ShowPlayerHasDead()
+    {
+        
+    }
 
     public static bool IsValidViewController()
     {
