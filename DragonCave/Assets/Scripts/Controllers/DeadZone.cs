@@ -28,6 +28,12 @@ public class DeadZone : MonoBehaviour
 
     private void ProcessCollision(Collider2D col)
     {
+
+
+        if (LevelController.instance.gameState != GameStates.Playing)
+            return;
+
+
         //validar que se ha el player
         if (col.transform.gameObject.layer != 9)
             return;

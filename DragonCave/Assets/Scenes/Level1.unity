@@ -113,6 +113,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &4024194 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 913909143}
 --- !u!1 &16771139
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +289,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &99770587 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 768762100}
 --- !u!1 &111711220
 GameObject:
   m_ObjectHideFlags: 0
@@ -7284,7 +7294,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cf5b3978280eb8f4992ff2aa3a59096c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7339,8 +7349,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.018102884, y: -0.0045256615}
-  m_Size: {x: 0.85517836, y: 0.9185376}
+  m_Offset: {x: 0.018102884, y: -0.0067477226}
+  m_Size: {x: 0.85517836, y: 0.85517836}
   m_Direction: 0
 --- !u!114 &595465291
 MonoBehaviour:
@@ -7353,7 +7363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8354d97149b66c74e8383fa96a8691be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallJumpingMsFrecuency: 50
+  WallJumpingMsFrecuency: 40
   minGroundNormalY: 0.65
   Gravitywallsliding: 0.35
   Gravity: 1
@@ -8154,7 +8164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MilisecondsYeloowTime: 5000
   direction: {x: 0, y: -1, z: 0}
-  velnormalscale: 0.5
+  velnormalscale: 0.25
   yellowswitchvelscale: 0.1
   velnormalmultiplier: 10
   movingState: 0
@@ -8423,6 +8433,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &754882674 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 491393111}
 --- !u!1001 &768762100
 Prefab:
   m_ObjectHideFlags: 0
@@ -8490,11 +8505,12 @@ GameObject:
   - component: {fileID: 775877494}
   - component: {fileID: 775877493}
   - component: {fileID: 775877492}
+  - component: {fileID: 775877497}
   - component: {fileID: 775877496}
   - component: {fileID: 775877498}
-  - component: {fileID: 775877497}
   - component: {fileID: 775877499}
   - component: {fileID: 775877500}
+  - component: {fileID: 775877501}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8578,6 +8594,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 595465288}
   canvas: {fileID: 0}
+  InitScreen: "Hello\nThis is Dragon cave , a game developed for ludumdare 42 (Running
+    out of space).\nButtons: \nDiections : Left Arrow, Right Arrow\nJump: Space bar\nYa
+    can jump when colliding on a wall by pressing Jump.\nAlow the way Try to avoid
+    being smash , being on the lava or fall on the spikes\n"
+  congratulations: Congratulations you have won
+  DevelopBy: 'THANKS! FOR PLAYING
+
+    This game was develop by a copule of Colombians :_/
+
+    Andres Vargas @archarry: Developer
+
+    Alejandro Vargas: Sound Master
+
+'
+  DamageRecived: 0
 --- !u!114 &775877497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8590,6 +8621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 595465288}
+  gameState: 0
   CurrentLevel: 0
   levels:
   - initialCameraPosition: {x: 0, y: 0, z: 0}
@@ -8681,6 +8713,22 @@ MonoBehaviour:
       minDistance: 1
       comparisionType: 0
     currentIndexCheckPoint: 0
+  restartableObjects:
+  - {fileID: 775877495}
+  - {fileID: 595465288}
+  - {fileID: 666755804}
+  - {fileID: 145889252}
+  - {fileID: 728544066}
+  - {fileID: 1901354567}
+  - {fileID: 699432262}
+  - {fileID: 888060932}
+  - {fileID: 1192434716}
+  - {fileID: 754882674}
+  - {fileID: 974955302}
+  - {fileID: 1295713694}
+  - {fileID: 4024194}
+  - {fileID: 99770587}
+  - {fileID: 0}
 --- !u!114 &775877498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8728,6 +8776,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916e3dbbb6a9f3f4a8e293edf0412644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &775877501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 775877491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f01c76eeb6b1542b418789f44f7b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerSprites:
+  - {fileID: 21300000, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
+  - {fileID: 21300000, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300006, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
+  - {fileID: 21300004, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
+  - {fileID: 21300008, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
+  - {fileID: 21300002, guid: 9a91b81ee98189b4b9dcd1d023424865, type: 3}
 --- !u!1 &801859314
 GameObject:
   m_ObjectHideFlags: 0
@@ -9285,6 +9352,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &974955302 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 600096950}
 --- !u!1 &988273151
 GameObject:
   m_ObjectHideFlags: 0
@@ -10057,6 +10129,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &1192434716 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 242812863}
 --- !u!1 &1198471852
 GameObject:
   m_ObjectHideFlags: 0
@@ -10349,6 +10426,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &1295713694 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4894957144964048, guid: ea0895dde1de20e47bc51c4baac9646f,
+    type: 2}
+  m_PrefabInternal: {fileID: 2044281968}
 --- !u!1 &1321860747
 GameObject:
   m_ObjectHideFlags: 0
@@ -12777,7 +12859,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2071578716}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.09, y: -2.04, z: 0}
+  m_LocalPosition: {x: 3.73, y: -2.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1385521418}

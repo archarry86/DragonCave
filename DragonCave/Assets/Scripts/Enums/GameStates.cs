@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public enum PlayerStates
+public enum GameStates
 {
-    _Initial,
-    OnGround,
-    Dead,
-    Falling,
-    Jumpling,
+    _InitScreen,
+    Playing,
+    PlayerHasDead,
+    PlayerHasWon,
+    NextLevelLoading,
+    ScoreScreen
 }

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public enum GameStates
+
+public enum PlayerStates
 {
-    _InitScreen,
-    Climbing,
-    Playing,
-    PlayerHasDead,
-    PlayerHasWon,
-    NextLevelLoading,
-    ScoreScreen
+    _Initial,
+    OnGround,
+    Dead,
+    Falling,
+    Jumpling,
+    HasWon
 }

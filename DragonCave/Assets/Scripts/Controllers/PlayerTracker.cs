@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerTracker : MonoBehaviour
+public class PlayerTracker : MonoBehaviour,IRestartable
 {
+    private Vector3 initialpos = Vector3.zero;
+
     public Transform player;
 
     public int MaxXDistance = 1;
@@ -12,6 +14,7 @@ public class PlayerTracker : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        initialpos = this.transform.position;
         palyercontroller = player.GetComponent<Player>();
     }
 
@@ -63,5 +66,10 @@ public class PlayerTracker : MonoBehaviour
 
         Camera.main.transform.position = position;
 
+    }
+
+    public void Restart()
+    {
+        this.transform.position = initialpos;
     }
 }

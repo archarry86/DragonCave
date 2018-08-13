@@ -314,7 +314,9 @@
     <Compile Include="Assets\Scripts\Enums\PlayerStates.cs" />
     <Compile Include="Assets\Scripts\Enums\SwitchTypes.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayerInfo.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IRestartable.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ISwitchListener.cs" />
+    <Compile Include="Assets\Scripts\Managers\SpritePlayerMannager.cs" />
     <Compile Include="Assets\Scripts\Managers\SwitchSpritesMannager.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\LevelStatus.cs" />

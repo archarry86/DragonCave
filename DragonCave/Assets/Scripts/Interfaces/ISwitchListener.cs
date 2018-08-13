@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public interface ISwitchListener 
+public interface IRestartable
 {
 
-    void SwitchOn(SwitchTypes switchType);
+    void Restart();
 }

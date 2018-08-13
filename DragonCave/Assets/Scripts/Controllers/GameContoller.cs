@@ -9,16 +9,21 @@ public abstract class GameContoller : MonoBehaviour
 
     protected IPlayerStatus playerInfo;
 
-    protected GameStates gameState;
+    public GameStates gameState;
 
     public int CurrentLevel = 0;
+
+     void Awake()
+    {
+        ProcessAwake();
+    }
 
     // Use this for initialization
     void Start()
     {
         playerInfo = playerTransform.GetComponent<IPlayerStatus>();
         //todo should be _InitScreen
-        gameState = GameStates.Playing;
+        gameState = GameStates._InitScreen;
         ProcessStart();
     }
 
@@ -74,6 +79,12 @@ public abstract class GameContoller : MonoBehaviour
     {
 
     }
+
+    public virtual void ProcessAwake()
+    {
+
+    }
+
 
     public virtual void ProcessOnGUI()
     {

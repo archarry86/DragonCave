@@ -9,19 +9,32 @@ public class LevelController : GameContoller
 
     public LevelInfo[] levels;
 
-    public override void ProcessStart()
+    public Transform[] restartableObjects = new Transform[15];
+
+
+    public override void ProcessAwake()
     {
-        if(instance == null)
-        instance = this;
+        if (instance == null)
+            instance = this;
         else
         {
             Destroy(this);
             return;
         }
+   
+    }
+
+
+    public override void ProcessStart()
+    {
+        
         if(levels!= null && levels.Length > 0)
         levelInformation = levels[0];
+        levelInformation.currentIndexCheckPoint = 0;
 
+        ViewController.instance.DamageRecived = 0;
 
+        AudioController.instance.StopSound(Sounds.Victory);
         AudioController.instance.LoopSound(Sounds.Theme);
     }
 
@@ -93,15 +106,15 @@ public class LevelController : GameContoller
 
     public void KillPlayerDueDeadZone()
     {
-       // if (gameState == GameStates.Playing && !playerInfo.IsAlive())
-       //     return;
-       //
-       // gameState = GameStates.PlayerHasDead;
-       // var player =  playerTransform.GetComponent<Player>();
-       //
-       // player.Dead();
+        // if (gameState == GameStates.Playing && !playerInfo.IsAlive())
+        //     return;
+        //
+        // gameState = GameStates.PlayerHasDead;
+        // var player =  playerTransform.GetComponent<Player>();
+        //
+        // player.Dead();
 
-
+        ViewController.instance.DamageRecived++;
     }
 
     public void PlayerHasWon()
@@ -110,6 +123,7 @@ public class LevelController : GameContoller
             return;
 
         gameState = GameStates.PlayerHasWon;
+        this.playerTransform.GetComponent<Player>().PlayerHasWon();
         //show score 
         ViewController.instance.ShowLevelPassed();
         ViewController.instance.ShowScore();
@@ -128,6 +142,28 @@ public class LevelController : GameContoller
         ViewController.instance.ShowScore();
     }
 
+    public void ReStartGame()
+    {
+       for(int i = 0;i< restartableObjects.Length; i++)
+        {
+            if(restartableObjects[i] == null)
+            {
+                continue;
+            }
 
+           var obj =  restartableObjects[i].GetComponent<IRestartable>();
+            if(obj!= null)
+            {
+                obj.Restart();
+            }
+        }
+
+        AudioController.instance.StopSound(Sounds.Victory);
+        AudioController.instance.LoopSound(Sounds.Theme);
+        ViewController.instance.Restart();
+
+        Camera.main.GetComponent<IRestartable>().Restart();
+        base.StartPlaying();
+    }
 
 }

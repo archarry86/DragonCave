@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch : MonoBehaviour
+public class Switch : MonoBehaviour, IRestartable
 {
+    private Vector3 initialpos = Vector3.zero;
 
     public Transform listenerObject;
 
@@ -20,6 +21,8 @@ public class Switch : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        initialpos = this.transform.position;
+
         normalState = SwitchSpritesMannager.instance.SwtitchSprites[(int)switchType * 2];
         pressedState = SwitchSpritesMannager.instance.SwtitchSprites[((int)switchType * 2) + 1];
 
@@ -51,6 +54,12 @@ public class Switch : MonoBehaviour
 
     private void ProcessCollision(Collider2D col)
     {
+
+
+        if (LevelController.instance.gameState != GameStates.Playing)
+            return;
+
+
         if (switchState != SwitchStates.Normal)
             return;
 
@@ -60,9 +69,20 @@ public class Switch : MonoBehaviour
         switchState = SwitchStates.Pressed;
         this.GetComponent<SpriteRenderer>().sprite = pressedState;
         AudioController.instance.PlaySound(Sounds.Switch);
+        this.enabled = false;
         if (listener != null)
         {
             listener.SwitchOn(this.switchType);
         }
+
+
+    }
+
+    public void Restart()
+    {
+        this.enabled = true;
+        this.transform.position = initialpos;
+        switchState = SwitchStates.Normal;
+        this.GetComponent<SpriteRenderer>().sprite = normalState;
     }
 }

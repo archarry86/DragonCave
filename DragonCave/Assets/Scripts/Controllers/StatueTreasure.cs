@@ -24,7 +24,8 @@ public class StatueTreasure : MonoBehaviour
         if (col.transform.gameObject.layer != 9)
             return;
 
-        AudioController.instance.PlaySound(Sounds.Treasure);
+        //AudioController.instance.PlaySound(Sounds.Treasure);
+
         LevelController.instance.PlayerHasWon();
     }
 

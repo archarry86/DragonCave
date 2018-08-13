@@ -2,8 +2,10 @@
 using System.Collections;
 using System;
 
-public class WallFloorMovement : MonoBehaviour, ISwitchListener
+public class WallFloorMovement : MonoBehaviour, ISwitchListener, IRestartable
 {
+
+    private Vector3 initialposition = Vector3.zero;
     public int MilisecondsYeloowTime = 5000;
     private TimeSpan yellowTime;
 
@@ -38,14 +40,18 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
         yellowTime = TimeSpan.FromMilliseconds(MilisecondsYeloowTime);
 
-       
+        initialposition = this.transform.position;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
+
+       
+        if (LevelController.instance.gameState != GameStates.Playing)
+            return;
+
         switch (movingState)
         {
             case MovingWalStates._Still:
@@ -208,6 +214,16 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
         {
             //Debug.Log("ProcessCollision");
             this.movingState = MovingWalStates.Crashed;
+            AudioController.instance.PlaySound(Sounds.WallHit);
+            this.enabled = false;
         }
+    }
+
+    public void Restart()
+    {
+        this.enabled = true;
+        this.movingState = MovingWalStates._Still;
+        this.switchType = SwitchTypes._None;
+        this.transform.position = initialposition;
     }
 }

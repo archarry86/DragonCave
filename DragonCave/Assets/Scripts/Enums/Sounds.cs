@@ -7,5 +7,6 @@ public enum Sounds
     Switch,
     Theme,
     Treasure,
-    Victory
+    Victory,
+    WallHit
 }

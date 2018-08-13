@@ -38,6 +38,8 @@ public class AudioController : MonoBehaviour
 
     public void LoopSound(Sounds name)
     {
+
+
         AudioSource adsrc = sounds[(int)name];
         if (adsrc.isPlaying)
         {

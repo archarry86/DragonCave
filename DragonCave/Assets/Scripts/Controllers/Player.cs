@@ -2,8 +2,10 @@
 using System.Collections;
 using System;
 
-public class Player : MonoBehaviour,IPlayerStatus
+public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 {
+    private Vector3 initialpos = Vector3.zero;
+
     private TimeSpan nextWallSliding = TimeSpan.Zero;
 
     private DateTime datewalljump = DateTime.MinValue;
@@ -49,9 +51,15 @@ public class Player : MonoBehaviour,IPlayerStatus
 
     private new Rigidbody2D rigidbody2D;
 
+    private SpriteRenderer spriteRender = null;
+
     // Use this for initialization
     void Start()
     {
+        initialpos = this.transform.position;
+
+        spriteRender = this.GetComponent<SpriteRenderer>();
+
         nextWallSliding = TimeSpan.FromMilliseconds(WallJumpingMsFrecuency);
 
         playerState = PlayerStates.OnGround;
@@ -66,52 +74,104 @@ public class Player : MonoBehaviour,IPlayerStatus
     // Update is called once per frame
     void Update()
     {
-        wallsliding = false;
-        frame++;
-        switch (playerState)
+
+       
+        try
         {
+            if (LevelController.instance.gameState != GameStates.Playing)
+            return;
 
-            case PlayerStates.Falling:
-                //ProcessFalling();
-                CheckMovingButtons();
-                CheckWallSliding();
-                CheckOnTheFloor();
-               
-                AddHorizontalMovement();
 
-                break;
-            case PlayerStates.Jumpling:
+                wallsliding = false;
+            frame++;
+            switch (playerState)
+            {
 
-                CheckMovingButtons();
-                ProcessJump();
-                CheckWallSliding();
-                if (!wallsliding)
-                    AddHorizontalMovement();
-                else
-                 {
-                    playerState = PlayerStates.Falling;
-                    this.CurrentJumpVector = Vector3.zero;
-
-                }
-
-                break;
-            case PlayerStates.OnGround:
-
-                CheckMovingButtons();
-
-                var _checkJumping = CheckJumping();
-                //Debug.Log(frame+" CheckJumping " + _checkJumping);
-                if (!_checkJumping)
+                case PlayerStates.Falling:
+                    //ProcessFalling();
+                    CheckMovingButtons();
+                    CheckWallSliding();
                     CheckOnTheFloor();
 
+                    AddHorizontalMovement();
 
-                AddHorizontalMovement();
+                    break;
+                case PlayerStates.Jumpling:
 
-               
+                    CheckMovingButtons();
+                    ProcessJump();
+                    CheckWallSliding();
+                    if (!wallsliding)
+                        AddHorizontalMovement();
+                    else
+                    {
+                        playerState = PlayerStates.Falling;
+                        this.CurrentJumpVector = Vector3.zero;
+
+                    }
+
+                    break;
+                case PlayerStates.OnGround:
+
+                    CheckMovingButtons();
+
+                    var _checkJumping = CheckJumping();
+                    //Debug.Log(frame+" CheckJumping " + _checkJumping);
+                    if (!_checkJumping)
+                        CheckOnTheFloor();
+
+
+                    AddHorizontalMovement();
+
+
+
+
+                    break;
+
+
+            }
+        }
+        finally
+        {
+            SetPlayerSprite();
+        }
+      
+    }
+
+    private void SetPlayerSprite()
+    {
+        try{
+            var ls = this.transform.localScale;
+            if (horizontalMovement == Vector3.left)
+            {
+          
+                ls.x = Mathf.Abs(ls.x) * -1;
+            }
+            else
+            {
               
+                ls.x = Mathf.Abs(ls.x);
+            }
 
-                break;
-       
+            this.transform.localScale = ls;
+            if (playerState == PlayerStates.OnGround)
+            {
+                if(horizontalMovement == Vector3.zero)
+                spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[(int)PlayerStates.OnGround];
+                else
+                {
+                    spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[SpritePlayerMannager.instance.PlayerSprites.Length-1];
+                }
+            }
+            else
+            {
+                spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[(int)playerState];
+            }
+
+
+        }
+        finally
+        {
 
         }
     }
@@ -135,7 +195,7 @@ public class Player : MonoBehaviour,IPlayerStatus
         if (rayhits.collider != null)
         {
             wallsliding = true;
-            if ( Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
+            if ( Input.GetKeyDown(KeyCode.Space)  || Input.GetKey(KeyCode.Space))
             {
                 if((DateTime.Now - datewalljump) >= nextWallSliding)
                 {
@@ -273,7 +333,7 @@ public class Player : MonoBehaviour,IPlayerStatus
 
 
 
-        Debug.DrawRay(this.transform.position, _down, Color.red);
+        //Debug.DrawRay(this.transform.position, _down, Color.red);
       
         switch (playerState)
         {
@@ -331,5 +391,17 @@ public class Player : MonoBehaviour,IPlayerStatus
     public void Dead()
     {
          playerState = PlayerStates.Dead;
+    }
+
+    public void PlayerHasWon()
+    {
+        playerState = PlayerStates.HasWon;
+    }
+
+
+    public void Restart()
+    {
+        this.transform.position = initialpos;
+        this.playerState = PlayerStates.OnGround;
     }
 }
