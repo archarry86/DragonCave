@@ -36,7 +36,7 @@ public class ViewController : MonoBehaviour
        var levelinfo= LevelController.instance.levels[LevelController.instance.CurrentLevel];
         var message = "currentIndexCheckPoint" + levelinfo.currentIndexCheckPoint;
 
-        OnGUIDebugMessage(ref message);
+       // OnGUIDebugMessage(ref message);
     }
 
     private void OnGUIDebugMessage(ref string message)

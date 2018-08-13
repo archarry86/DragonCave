@@ -7,13 +7,13 @@ public class StatueTreasure : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log(" StatueTreasure OnTriggerEnter2D");
+        //Debug.Log(" StatueTreasure OnTriggerEnter2D");
         ProcessCollision(col);
     }
 
     void OnTriggerStay2D(Collider2D col)
     {
-        Debug.Log(" StatueTreasure OnTriggerStay2D");
+        //Debug.Log(" StatueTreasure OnTriggerStay2D");
         ProcessCollision(col);
 
     }
