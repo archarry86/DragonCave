@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4563377277675560}
   - component: {fileID: 61202077169693176}
+  - component: {fileID: 50491481893101842}
+  - component: {fileID: 114051815126027328}
   m_Layer: 0
   m_Name: Lvf1
   m_TagString: Untagged
@@ -94,13 +96,33 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1349624333698624}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.99, y: -4.99, z: 0.70703125}
+  m_LocalPosition: {x: 51.989758, y: -8.021883, z: 0.70703125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4266109998640932}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50491481893101842
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349624333698624}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 7
 --- !u!61 &61202077169693176
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -126,6 +148,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8188972, y: 1.9975662}
   m_EdgeRadius: 0
+--- !u!114 &114051815126027328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349624333698624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29dc39233fb2fd44ba927d38c80f564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!156049354 &2569400268188893514
 Grid:
   m_ObjectHideFlags: 1

@@ -18,6 +18,8 @@ public class LevelController : GameContoller
             Destroy(this);
             return;
         }
+        if(levels!= null && levels.Length > 0)
+        levelInformation = levels[0];
     }
 
     public void NextLevel()
@@ -74,6 +76,9 @@ public class LevelController : GameContoller
             case GameStates.PlayerHasWon:
 
                 break;
+            case GameStates.PlayerHasDead:
+
+                break;
             case GameStates.NextLevelLoading:
 
                 break;
@@ -83,8 +88,24 @@ public class LevelController : GameContoller
       
     }
 
+    public void KillPlayerDueDeadZone()
+    {
+       // if (gameState == GameStates.Playing && !playerInfo.IsAlive())
+       //     return;
+       //
+       // gameState = GameStates.PlayerHasDead;
+       // var player =  playerTransform.GetComponent<Player>();
+       //
+       // player.Dead();
+
+
+    }
+
     public void PlayerHasWon()
     {
+        if (gameState != GameStates.Playing)
+            return;
+
         gameState = GameStates.PlayerHasWon;
         //show score 
         ViewController.instance.ShowLevelPassed();
@@ -93,10 +114,14 @@ public class LevelController : GameContoller
 
     public void PlayerHasDead()
     {
-        gameState = GameStates.PlayerHasWon;
+        
+
+      
         //show score 
         ViewController.instance.ShowPlayerHasDead();
         ViewController.instance.ShowScore();
     }
+
+
 
 }

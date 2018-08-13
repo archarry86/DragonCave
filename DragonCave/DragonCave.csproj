@@ -297,9 +297,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Controllers\AudioController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\DeadZone.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameContoller.cs" />
     <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
-    <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\Player.cs" />
     <Compile Include="Assets\Scripts\Controllers\StatueTreasure.cs" />
     <Compile Include="Assets\Scripts\Controllers\Switch.cs" />
     <Compile Include="Assets\Scripts\Controllers\ViewController.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Assets\Scripts\Interfaces\ISwitchListener.cs" />
     <Compile Include="Assets\Scripts\Managers\SwitchSpritesMannager.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\LevelInfo.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\LevelStatus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

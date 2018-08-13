@@ -105,7 +105,7 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
 
         this.switchType = switchType;
         this.movingState = MovingWalStates.OnSwitchBehavior;
-         Debug.Log("switchType= " + this.switchType + ", movingState=" + this.movingState);
+        // Debug.Log("switchType= " + this.switchType + ", movingState=" + this.movingState);
     }
 
     public void SwitchBehavior()
@@ -204,7 +204,7 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener
     {
         if (col.gameObject.layer == 8 && movingState == MovingWalStates.Moving)
         {
-            Debug.Log("ProcessCollision");
+            //Debug.Log("ProcessCollision");
             this.movingState = MovingWalStates.Crashed;
         }
     }

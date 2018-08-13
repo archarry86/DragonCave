@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour,IPlayerStatus
+public class Player : MonoBehaviour,IPlayerStatus
 {
     public PlayerStates playerState;
 
@@ -20,5 +20,10 @@ public class PlayerController : MonoBehaviour,IPlayerStatus
     public bool IsAlive()
     {
         return playerState != PlayerStates.Dead;
+    }
+
+    public void Dead()
+    {
+         playerState = PlayerStates.Dead;
     }
 }

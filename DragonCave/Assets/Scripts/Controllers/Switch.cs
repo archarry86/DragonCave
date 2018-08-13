@@ -39,21 +39,23 @@ public class Switch : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         //Debug.Log("OnTriggerEnter2D");
-        ProcessCollision();
+        ProcessCollision(col);
     }
 
     void OnTriggerStay2D(Collider2D col)
     {
         //Debug.Log("OnTriggerStay2D");
-        ProcessCollision();
+        ProcessCollision(col);
 
     }
 
-    private void ProcessCollision()
+    private void ProcessCollision(Collider2D col)
     {
         if (switchState != SwitchStates.Normal)
             return;
 
+        if (col.transform.gameObject.layer != 9)
+            return;
 
         switchState = SwitchStates.Pressed;
         this.GetComponent<SpriteRenderer>().sprite = pressedState;

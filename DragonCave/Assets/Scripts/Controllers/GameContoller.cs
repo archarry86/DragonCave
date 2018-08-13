@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class GameContoller : MonoBehaviour
 {
-    public LevelInfo levelInformation;
+    protected LevelInfo levelInformation;
 
     public Transform playerTransform;
 

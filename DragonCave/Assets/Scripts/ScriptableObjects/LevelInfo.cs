@@ -3,8 +3,9 @@ using UnityEditor;
 using UnityEngine.Events;
 
 
-[CreateAssetMenu(fileName = "New Level Info", menuName = "Level Info")]
-public class LevelInfo : ScriptableObject
+//[CreateAssetMenu(fileName = "New Level Info", menuName = "Level Info")]
+[System.Serializable]
+public class LevelInfo 
 {
     public Vector3 initialCameraPosition;
 
@@ -14,17 +15,19 @@ public class LevelInfo : ScriptableObject
 
     public LevelCheckPoint[] levelCheckPoints;
 
-    public int currentIndexCheckPoint;
+    public int currentIndexCheckPoint = 0;
 
     public void NextCheckPoint()
     {
-        if(currentIndexCheckPoint< levelCheckPoints.Length)
-        currentIndexCheckPoint += 1;
+        if(currentIndexCheckPoint < levelCheckPoints.Length)
+        currentIndexCheckPoint ++;
     }
 
     public bool IsCurrentCheckPointActivated(Vector3 position)
     {
         bool result = false;
+        if (currentIndexCheckPoint >= levelCheckPoints.Length)
+            return result;
 
         var info = levelCheckPoints[currentIndexCheckPoint];
 
@@ -47,9 +50,7 @@ public class LevelCheckPoint
 
     public LevelEvent levelEnvent;
 
-    public string Name;
-
-    public float MinDistance;
+    public float minDistance;
 
     public CheckPointComparision comparisionType;
 
@@ -59,23 +60,23 @@ public class LevelCheckPoint
         switch (comparisionType)
         {
             case CheckPointComparision.X:
-            return     this.checkPoint.position.x - position.x >= MinDistance;
+            return      position.x - this.checkPoint.position.x >= minDistance;
                 break;
             case CheckPointComparision.X_abs:
-                return Mathf.Abs(this.checkPoint.position.x - position.x) >= MinDistance;
+                return Mathf.Abs(this.checkPoint.position.x - position.x) >= minDistance;
                 break;
             case CheckPointComparision.Y:
-                return this.checkPoint.position.y - position.y >= MinDistance;
+                return position.y - this.checkPoint.position.y >= minDistance;
                 break;
             case CheckPointComparision.Y_abs:
-                return Mathf.Abs(this.checkPoint.position.y - position.y) >= MinDistance;
+                return Mathf.Abs(this.checkPoint.position.y - position.y) >= minDistance;
                 break;
             case CheckPointComparision.Magnitude:
 
-                return (this.checkPoint.position - position).magnitude >= MinDistance;
+                return (position- this.checkPoint.position).magnitude >= minDistance;
                 break;
             case CheckPointComparision.Magnitude_abs:
-                return Mathf.Abs((this.checkPoint.position - position).magnitude) >= MinDistance;
+                return Mathf.Abs((this.checkPoint.position - position).magnitude) >= minDistance;
 
                 break;
         }

@@ -5,20 +5,20 @@ public class StatueTreasure : MonoBehaviour
 {
 
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log("OnCollisionEnter2D");
-        ProcessCollision();
+        Debug.Log(" StatueTreasure OnTriggerEnter2D");
+        ProcessCollision(col);
     }
 
-    void OnCollisionStay2D(Collision2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
-        //Debug.Log("OnCollisionStay2D");
-        ProcessCollision();
+        Debug.Log(" StatueTreasure OnTriggerStay2D");
+        ProcessCollision(col);
 
     }
 
-    private void ProcessCollision()
+    private void ProcessCollision(Collider2D col)
     {
         //Player has won
 
