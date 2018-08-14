@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEditor;
+using System.Collections;
+
 
 public enum Sounds
 {
@@ -8,5 +9,6 @@ public enum Sounds
     Theme,
     Treasure,
     Victory,
-    WallHit
+    WallHit,
+    Theme2,
 }

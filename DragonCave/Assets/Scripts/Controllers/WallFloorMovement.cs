@@ -152,49 +152,15 @@ public class WallFloorMovement : MonoBehaviour, ISwitchListener, IRestartable
                 break;
         }
     }
-
+    private int counter = 0;
     private bool IsOnYellowSwitchBehavior()
     {
-        return (DateTime.Now - iniDate) <= yellowTime;
+        var result = (DateTime.Now - iniDate);
+         counter = (int)yellowTime.TotalSeconds - (int)result.TotalSeconds;
+        ViewController.instance.ShowCounter(counter);
+        return result  <= yellowTime;
     }
 
-
-    void OnGUI()
-    {
-
-        switch (movingState)
-        {
-            case MovingWalStates._Still:
-                break;
-            case MovingWalStates.Crashed:
-                break;
-            case MovingWalStates.Moving:
-
-                break;
-            case MovingWalStates.OnSwitchBehavior:
-                switch (switchType)
-                {
-                    case SwitchTypes.Blue:
-                        ;
-                        break;
-                    case SwitchTypes.Green:
-                        break;
-                    case SwitchTypes.Red:
-
-                        break;
-                    case SwitchTypes.Yellow:
-                        //SHOW ON CANVAS TIMING
-                        var result = (DateTime.Now - iniDate);
-                        if (result <= yellowTime)
-                        {
-                            if (ViewController.IsValidViewController())
-                                ViewController.instance.ShowCounter((int)yellowTime.TotalSeconds - (int)result.TotalSeconds);
-                        }
-                        break;
-                }
-                break;
-        }
-    }
 
     void OnCollisionEnter2D(Collision2D col)
     {

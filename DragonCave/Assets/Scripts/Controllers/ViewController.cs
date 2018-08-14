@@ -46,10 +46,12 @@ public class ViewController : MonoBehaviour
     {
         //var levelinfo= LevelController.instance.levels[LevelController.instance.CurrentLevel];
         // var message = "currentIndexCheckPoint" + levelinfo.currentIndexCheckPoint;
-
+        Color current = GUI.color;
         switch (levelController.gameState)
         {
             case GameStates._InitScreen:
+             
+                GUI.color = Color.green;
 
                 GUI.Box(new Rect(10,10, Screen.width-10, Screen.height/ 4), InitScreen);
 
@@ -57,21 +59,21 @@ public class ViewController : MonoBehaviour
                 {
                     levelController.StartPlaying();
                 }
-
+           
                 break;
             case GameStates.Playing:
 
                
 
-                Color current = GUI.color;
+             
 
                 GUI.color = Color.cyan;
-                GUI.Box(new Rect(20, 20, 300, 20), "DamageRecived : " + DamageRecived);
+                GUI.Box(new Rect(20, 20, Screen.width / 4, 40), "Damage : " + DamageRecived);
 
                 if (!string.IsNullOrEmpty(Counter))
                 {
                     GUI.color = Color.red;
-                    GUI.Box(new Rect(Screen.width/2-75, 80, 150, 20), Counter);
+                    GUI.Box(new Rect(Screen.width/2-75, 80, 150, 40), Counter);
                     Counter = "";
                 }
 
@@ -81,7 +83,7 @@ public class ViewController : MonoBehaviour
                 }
 
 
-                GUI.color = current;
+             
                 break;
             case GameStates.PlayerHasDead:
                 break;
@@ -91,7 +93,7 @@ public class ViewController : MonoBehaviour
 
                 if (GUI.Button(new Rect((Screen.width / 2) -100, 10 + Screen.height / 4, 200 , 50), " TryAgain ? "))
                 {
-                    levelController.ReStartGame();
+                    levelController.ReStartGame(true);
                 }
 
                 break;
@@ -101,6 +103,10 @@ public class ViewController : MonoBehaviour
                 break;
         }
 
+        if (GUI.Button(new Rect(Screen.width-100, Screen.height - 50, 100, 50), " Exit ") || Input.GetKey("escape"))
+            Application.Quit();
+
+        GUI.color = current;
     }
 
     private void OnGUIDebugMessage(ref string message)
@@ -166,12 +172,12 @@ public class ViewController : MonoBehaviour
 
     public virtual void ShowLevelPassed()
     {
-        Debug.Log("View ShowLevelPassed ");
+        //Debug.Log("View ShowLevelPassed ");
     }
 
     public virtual void ShowPlayerHasDead()
     {
-        Debug.Log("View ShowPlayerHasDead ");
+        //Debug.Log("View ShowPlayerHasDead ");
     }
 
     public static bool IsValidViewController()

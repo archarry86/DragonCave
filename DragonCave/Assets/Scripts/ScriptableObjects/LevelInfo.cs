@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using UnityEditor;
+using System.Collections;
 using UnityEngine.Events;
+
 
 
 //[CreateAssetMenu(fileName = "New Level Info", menuName = "Level Info")]

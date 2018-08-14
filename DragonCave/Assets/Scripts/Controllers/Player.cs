@@ -53,6 +53,9 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
     private SpriteRenderer spriteRender = null;
 
+    public Transform LeftCheck;
+
+    public Transform RightCheck;
     // Use this for initialization
     void Start()
     {
@@ -79,7 +82,11 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
         try
         {
             if (LevelController.instance.gameState != GameStates.Playing)
-            return;
+            {
+                this.rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+                return;
+            }
+      
 
 
                 wallsliding = false;
@@ -181,39 +188,78 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
 
         this.rigidbody2D.gravityScale = Gravity;
-        Vector3 direction = horizontalMovement;
-        direction.x *= (this.transform.localScale.x / 2); // + 0.1f;
+        var checker = RightCheck;
+        if (horizontalMovement == Vector3.left)
+            checker = LeftCheck; 
 
-        RaycastHit2D rayhits = Physics2D.BoxCast(
-            this.transform.position + direction,
-            new Vector2(this.transform.localScale.x / 2, this.transform.localScale.y), 
-            0, 
-            new Vector2(direction.x / 2, 0), 
-           Mathf.Abs(direction.x / 2 ),
-            LayerMask.GetMask("Ground"));
+    RaycastHit2D rayhits = Physics2D.BoxCast(
+          checker.position,
+          new Vector2(horizontalMovement.x/10, this.transform.localScale.y), 
+          0, 
+          new Vector2(horizontalMovement.x / 10, 0), 
+         Mathf.Abs(horizontalMovement.x / 10),
+          LayerMask.GetMask("Ground"));
 
-        if (rayhits.collider != null)
-        {
-            wallsliding = true;
-            if ( Input.GetKeyDown(KeyCode.Space)  || Input.GetKey(KeyCode.Space))
-            {
-                if((DateTime.Now - datewalljump) >= nextWallSliding)
-                {
-                    datewalljump = DateTime.Now;
-                    playerState = PlayerStates.Jumpling;
-                    //AudioController.instance.PlaySound(Sounds.Jump);
-                    CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
-                }
-        
-            }
-            else
-            {
-                this.rigidbody2D.gravityScale = Gravitywallsliding;
-            }
+
+
+
+         if (rayhits.collider != null)
+         {
+             wallsliding = true;
+             if ( Input.GetKeyDown(KeyCode.Space)  || Input.GetKey(KeyCode.Space))
+             {
+                 if(datewalljump == DateTime.MinValue || (DateTime.Now - datewalljump) >= nextWallSliding)
+                 {
+                     datewalljump = DateTime.Now;
+                     playerState = PlayerStates.Jumpling;
+                     //AudioController.instance.PlaySound(Sounds.Jump);
+                     CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
+                 }
+         
+             }
+             else
+             {
+                 this.rigidbody2D.gravityScale = Gravitywallsliding;
+             }
         }
-    
+        else
+        {
+            datewalljump = DateTime.MinValue;
+        }
 
- 
+        // Vector3 direction = horizontalMovement;
+        // direction.x *= (this.transform.localScale.x / 2); // + 0.1f;
+        //
+        // RaycastHit2D rayhits = Physics2D.BoxCast(
+        //     this.transform.position + direction,
+        //     new Vector2(this.transform.localScale.x / 2, this.transform.localScale.y), 
+        //     0, 
+        //     new Vector2(direction.x / 2, 0), 
+        //    Mathf.Abs(direction.x / 2 ),
+        //     LayerMask.GetMask("Ground"));
+        //
+        // if (rayhits.collider != null)
+        // {
+        //     wallsliding = true;
+        //     if ( Input.GetKeyDown(KeyCode.Space)  || Input.GetKey(KeyCode.Space))
+        //     {
+        //         if((DateTime.Now - datewalljump) >= nextWallSliding)
+        //         {
+        //             datewalljump = DateTime.Now;
+        //             playerState = PlayerStates.Jumpling;
+        //             //AudioController.instance.PlaySound(Sounds.Jump);
+        //             CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
+        //         }
+        // 
+        //     }
+        //     else
+        //     {
+        //         this.rigidbody2D.gravityScale = Gravitywallsliding;
+        //     }
+        // }
+        //
+
+
     }
 
     private void ProcessJump()
@@ -303,7 +349,7 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
         CurrentNormal = Vector3.up;
         isonfloor = false;
         Vector3 _down = Vector3.down;
-        _down.y *= (this.transform.localScale.y / 2); // + 0.1f;
+        _down.y *= (this.transform.localScale.y / 2) + 0.01f;
     
         var mask = LayerMask.GetMask("Ground");
   
@@ -362,26 +408,7 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
     }
 
 
-    void OnGUI()
-    {
-
-      //  var _deltavector = new Vector3(-(this.transform.localScale.x), (this.transform.localScale.y / 2) + 1, 0);
-      //
-      //  var posonscreen = Camera.main.WorldToScreenPoint(this.transform.position + _deltavector);
-      //
-      //
-      //  GUI.Label(new Rect(0, 0, Screen.width, Screen.height),"Movement "+this.horizontalMovement+ " wallsliding " + wallsliding); //+ " Normal " +CurrentNormal + " RgbPos "+rigidbody2D.position+ " Playerstate = " + this.playerState + " , CurremtJumpVector = " + this.CurrentJumpVector);
-      //
-      //
-      //  var currentcolor = GUI.color;
-      //  GUI.color = Color.red;
-      //  GUI.Label(new Rect(posonscreen.x, Screen.height - posonscreen.y, 100, 50), playerState.ToString());
-      //  GUI.color = currentcolor;
-
-
-        
-       
-    }
+ 
 
     public bool IsAlive()
     {

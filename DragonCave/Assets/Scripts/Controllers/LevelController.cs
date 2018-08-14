@@ -6,7 +6,7 @@ public class LevelController : GameContoller
 {
    public static LevelController instance;
 
-
+    private int indexTheme = 0;
     public LevelInfo[] levels;
 
     public Transform[] restartableObjects = new Transform[15];
@@ -128,7 +128,7 @@ public class LevelController : GameContoller
         ViewController.instance.ShowLevelPassed();
         ViewController.instance.ShowScore();
 
-        AudioController.instance.StopSound(Sounds.Theme);
+        AudioController.instance.StopSound(indexTheme % 2 == 0 ? Sounds.Theme : Sounds.Theme2);
         AudioController.instance.PlaySound(Sounds.Victory);
     }
 
@@ -142,7 +142,7 @@ public class LevelController : GameContoller
         ViewController.instance.ShowScore();
     }
 
-    public void ReStartGame()
+    public void ReStartGame(bool isTryAgain = false)
     {
        for(int i = 0;i< restartableObjects.Length; i++)
         {
@@ -158,8 +158,14 @@ public class LevelController : GameContoller
             }
         }
 
+       if(isTryAgain) {
+
+
+            indexTheme++;
+
         AudioController.instance.StopSound(Sounds.Victory);
-        AudioController.instance.LoopSound(Sounds.Theme);
+        AudioController.instance.LoopSound(indexTheme %2== 0 ? Sounds.Theme: Sounds.Theme2);
+        }
         ViewController.instance.Restart();
 
         Camera.main.GetComponent<IRestartable>().Restart();

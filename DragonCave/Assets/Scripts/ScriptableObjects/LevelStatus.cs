@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEditor;
-[CreateAssetMenu(fileName = "LevelStatus", menuName = "New LevelStatus")]
+using System.Collections;
+
 public class LevelStatus : ScriptableObject
 {
     public int lastCheckPoint;

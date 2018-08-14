@@ -64,10 +64,6 @@ public abstract class GameContoller : MonoBehaviour
         }
     }
 
-    public void OnGUI()
-    {
-        ProcessOnGUI();
-    }
 
 
     public virtual void StartPlaying()
