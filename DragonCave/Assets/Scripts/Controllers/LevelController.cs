@@ -128,7 +128,7 @@ public class LevelController : GameContoller
         ViewController.instance.ShowLevelPassed();
         ViewController.instance.ShowScore();
 
-        AudioController.instance.StopSound(indexTheme % 2 == 0 ? Sounds.Theme : Sounds.Theme2);
+        AudioController.instance.StopSound(Sounds.Theme );
         AudioController.instance.PlaySound(Sounds.Victory);
     }
 
@@ -164,7 +164,7 @@ public class LevelController : GameContoller
             indexTheme++;
 
         AudioController.instance.StopSound(Sounds.Victory);
-        AudioController.instance.LoopSound(indexTheme %2== 0 ? Sounds.Theme: Sounds.Theme2);
+        AudioController.instance.LoopSound( Sounds.Theme);
         }
         ViewController.instance.Restart();
 
