@@ -2,8 +2,13 @@
 using System.Collections;
 using System;
 
-public class Player : MonoBehaviour,IPlayerStatus, IRestartable
+public class Player : MonoBehaviour, IPlayerStatus, IRestartable
 {
+    RaycastHit2D hit;
+    private Vector3 NormalOfCollision = Vector3.zero;
+    RaycastHit2D hit2;
+    private Vector3 NormalOfCollision2 = Vector3.zero;
+
     private Vector3 initialpos = Vector3.zero;
 
     private TimeSpan nextWallSliding = TimeSpan.Zero;
@@ -56,6 +61,9 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
     public Transform LeftCheck;
 
     public Transform RightCheck;
+
+
+    private ContactFilter2D filter2D = new ContactFilter2D();
     // Use this for initialization
     void Start()
     {
@@ -70,7 +78,12 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
         this.rigidbody2D = this.GetComponent<Rigidbody2D>();
 
         //TODO provisional
-       // Camera.main.transform.parent = this.transform;
+        // Camera.main.transform.parent = this.transform;
+
+
+        filter2D.useLayerMask = true;
+        filter2D.useTriggers = false;
+        filter2D.SetLayerMask(LayerMask.GetMask("Ground"));
     }
 
 
@@ -78,7 +91,7 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
     void Update()
     {
 
-       
+        CheckBoxCollider();
         try
         {
             if (LevelController.instance.gameState != GameStates.Playing)
@@ -86,10 +99,10 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
                 this.rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
                 return;
             }
-      
 
 
-                wallsliding = false;
+
+            wallsliding = false;
             frame++;
             switch (playerState)
             {
@@ -142,32 +155,56 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
         {
             SetPlayerSprite();
         }
-      
+
+    }
+
+    private void CheckBoxCollider()
+    {
+        NormalOfCollision = Vector3.zero;
+        var _collider = this.GetComponent<Collider2D>();
+        var aux = this.transform.position;
+        var _position = aux + new Vector3(0, -0.1f, 0);// Vector3.down ;
+
+        hit = Physics2D.BoxCast(_position, _collider.bounds.size, 0, Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null)
+        {
+            NormalOfCollision = hit.normal;
+        }
+
+        var end = _collider.bounds.size.y / 2 * Vector3.down;
+        hit2 = Physics2D.Linecast(this.transform.position, _position + end, filter2D.layerMask.value);
+
+        if (hit2.collider != null)
+        {
+            NormalOfCollision2 = hit2.normal;
+        }
     }
 
     private void SetPlayerSprite()
     {
-        try{
+        try
+        {
             var ls = this.transform.localScale;
             if (horizontalMovement == Vector3.left)
             {
-          
+
                 ls.x = Mathf.Abs(ls.x) * -1;
             }
             else
             {
-              
+
                 ls.x = Mathf.Abs(ls.x);
             }
 
             this.transform.localScale = ls;
             if (playerState == PlayerStates.OnGround)
             {
-                if(horizontalMovement == Vector3.zero)
-                spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[(int)PlayerStates.OnGround];
+                if (horizontalMovement == Vector3.zero)
+                    spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[(int)PlayerStates.OnGround];
                 else
                 {
-                    spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[SpritePlayerMannager.instance.PlayerSprites.Length-1];
+                    spriteRender.sprite = SpritePlayerMannager.instance.PlayerSprites[SpritePlayerMannager.instance.PlayerSprites.Length - 1];
                 }
             }
             else
@@ -187,40 +224,42 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
     {
 
 
+        var _collider = this.GetComponent<Collider2D>();
         this.rigidbody2D.gravityScale = Gravity;
         var checker = RightCheck;
         if (horizontalMovement == Vector3.left)
-            checker = LeftCheck; 
+            checker = LeftCheck;
 
-    RaycastHit2D rayhits = Physics2D.BoxCast(
-          checker.position,
-          new Vector2(horizontalMovement.x/10, this.transform.localScale.y), 
-          0, 
-          new Vector2(horizontalMovement.x / 10, 0), 
-         Mathf.Abs(horizontalMovement.x / 10),
-          LayerMask.GetMask("Ground"));
-
-
+        RaycastHit2D rayhits = Physics2D.BoxCast(
+              checker.position + horizontalMovement / 5,
+              _collider.bounds.size,
+              0,
+              horizontalMovement,
+             0.1f,
+              LayerMask.GetMask("Ground"));
 
 
-         if (rayhits.collider != null)
-         {
-             wallsliding = true;
-             if ( Input.GetKeyDown(KeyCode.Space)  || Input.GetKey(KeyCode.Space))
-             {
-                 if(datewalljump == DateTime.MinValue || (DateTime.Now - datewalljump) >= nextWallSliding)
-                 {
-                     datewalljump = DateTime.Now;
-                     playerState = PlayerStates.Jumpling;
-                     //AudioController.instance.PlaySound(Sounds.Jump);
-                     CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
-                 }
-         
-             }
-             else
-             {
-                 this.rigidbody2D.gravityScale = Gravitywallsliding;
-             }
+
+
+        if (rayhits.collider != null)
+        {
+            wallsliding = true;
+
+            if (datewalljump == DateTime.MinValue || (DateTime.Now - datewalljump) >= nextWallSliding)
+            {
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
+                {
+                    datewalljump = DateTime.Now;
+                    playerState = PlayerStates.Jumpling;
+                    //AudioController.instance.PlaySound(Sounds.Jump);
+                    CurrentJumpVector = this.JumpVector * JumpWallVectorPercentage;
+                }
+
+            }
+            else
+            {
+                this.rigidbody2D.gravityScale = Gravitywallsliding;
+            }
         }
         else
         {
@@ -281,7 +320,7 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
     }
 
-   
+
 
     private bool CheckJumping()
     {
@@ -315,9 +354,9 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
             horizontalMovement = Vector3.right;
         }
 
-       // this.transform.Translate(horizontalMovement * HorizontalMovementdelta * Time.deltaTime);
+        // this.transform.Translate(horizontalMovement * HorizontalMovementdelta * Time.deltaTime);
 
-       
+
 
     }
 
@@ -325,10 +364,20 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
     private void AddHorizontalMovement()
     {
-        this.rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation ;
+        this.rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        Vector3 moveAlongGround = new Vector3(CurrentNormal.y * horizontalMovement.x , -CurrentNormal.x* horizontalMovement.y); 
-        if(moveAlongGround != Vector3.zero)
+        Vector3 moveAlongGround = horizontalMovement;
+        if (CurrentNormal != Vector3.up && CurrentNormal != Vector3.zero)
+            Debug.Log("CurrentNormal " + CurrentNormal);
+
+        if (CurrentNormal != Vector3.zero)
+        {
+            Vector2 auxnormal = new Vector2(CurrentNormal.y, -CurrentNormal.x);
+            moveAlongGround.x = moveAlongGround.x * auxnormal.x;
+
+        }
+
+        if (moveAlongGround != Vector3.zero)
         {
             Vector3 pos = rigidbody2D.position;
             rigidbody2D.position = pos + moveAlongGround * HorizontalMovementdelta * Time.deltaTime;
@@ -339,35 +388,38 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
             this.rigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
 
-     
+
 
     }
 
     private void CheckOnTheFloor()
     {
-        this.rigidbody2D.gravityScale = wallsliding? Gravitywallsliding : Gravity;
-        CurrentNormal = Vector3.up;
+        this.rigidbody2D.gravityScale = wallsliding ? Gravitywallsliding : Gravity;
+
+        var _collider = this.GetComponent<Collider2D>();
+        CurrentNormal = Vector3.zero;
         isonfloor = false;
-        Vector3 _down = Vector3.down;
-        _down.y *= (this.transform.localScale.y / 2) + 0.01f;
-    
+
+
         var mask = LayerMask.GetMask("Ground");
-  
+
         RaycastHit2D rayhits = Physics2D.BoxCast(
-            this.transform.position + _down,
-            new Vector2(this.transform.localScale.x / 2, 0.1f),
+            this.transform.position + Vector3.down / 10,
+              _collider.bounds.size,
             0,
-            new Vector2(0,-0.1f), 
-            0.1f, 
-            LayerMask.GetMask("Ground")); 
+           Vector3.down,
+            0.01f,
+            LayerMask.GetMask("Ground"));
 
         if (rayhits.collider != null)
         {
             isonfloor = true;
-            if(rayhits.normal.y > minGroundNormalY)
-            CurrentNormal = rayhits.normal;
-            this.rigidbody2D.gravityScale = 0;
+            if (rayhits.normal.y > minGroundNormalY)
+                CurrentNormal = rayhits.normal;
+            this.rigidbody2D.gravityScale = 0.01f;
         }
+        if (!isonfloor)
+            Debug.Log("isonfloor " + isonfloor);
 
         // isonfloor = all != null && all.Length > 0;
         //var colider2d =  Physics2D.OverlapBox(this.transform.position+ _down, new Vector2(this.transform.localScale.x, 0.1f), LayerMask.GetMask("Ground")); ;
@@ -380,14 +432,14 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
 
         //Debug.DrawRay(this.transform.position, _down, Color.red);
-      
+
         switch (playerState)
         {
             case PlayerStates.OnGround:
                 if (!isonfloor)
                 {
                     playerState = PlayerStates.Falling;
-                 
+
                 }
                 break;
             case PlayerStates.Falling:
@@ -408,8 +460,12 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
     }
 
 
- 
 
+    void OnGUI()
+    {
+        var _collider = this.GetComponent<Collider2D>();
+        GUI.Label(new Rect(0, 0, Screen.width, 40), NormalOfCollision.ToString() + " " + hit.distance + " | 2= " + NormalOfCollision2 + " " + hit2.distance + " | " + filter2D.layerMask.value + " " + _collider.bounds.size);
+    }
     public bool IsAlive()
     {
         return playerState != PlayerStates.Dead;
@@ -417,7 +473,7 @@ public class Player : MonoBehaviour,IPlayerStatus, IRestartable
 
     public void Dead()
     {
-         playerState = PlayerStates.Dead;
+        playerState = PlayerStates.Dead;
     }
 
     public void PlayerHasWon()

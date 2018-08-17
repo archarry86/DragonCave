@@ -7372,7 +7372,7 @@ MonoBehaviour:
   playerState: 1
   HorizontalMovementdelta: 4
   JumpVector: {x: 0, y: 1.1, z: 0}
-  JumpWallVectorPercentage: 1.1
+  JumpWallVectorPercentage: 1.5
   gravity: {x: 0, y: -9.81, z: 0}
   LeftCheck: {fileID: 1079817283}
   RightCheck: {fileID: 660131226}
