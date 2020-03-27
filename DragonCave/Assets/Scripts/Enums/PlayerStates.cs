@@ -3,10 +3,12 @@ using System.Collections;
 
 public enum PlayerStates
 {
-    _Initial,
+     _Initial,
     OnGround,
     Dead,
+    HasWon,
     Falling,
     Jumpling,
-    HasWon
+    WallSliding,
+   OnTransition
 }
